@@ -4,6 +4,7 @@ const { generarJWT, verificarJWT } = require("../helpers/jwt");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password);
   try {
     const usuarioDB = await Usuario.findOne({ email });
 
