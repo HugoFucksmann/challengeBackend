@@ -4,7 +4,6 @@ const { generarJWT, verificarJWT } = require("../helpers/jwt");
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
   try {
     const usuarioDB = await Usuario.findOne({ email });
 
@@ -38,7 +37,7 @@ const login = async (req, res) => {
 };
 
 const renewToken = async (req, res) => {
-
+ 
   const {token} = req.token
    const verify = await verificarJWT(token);
 
@@ -51,13 +50,13 @@ const renewToken = async (req, res) => {
 const verificarToken = async (req, res) => {
   try {
     const {token} = req.body
-   
+    console.log(token);
    const verify = await verificarJWT(token);
-   
+  
    res.json({
-    ok: true,
-    verify
-  });
+      ok: true,
+      verify
+    });
   } catch (err) {
     console.log(err);
     res.status(400).json({
