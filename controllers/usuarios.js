@@ -1,10 +1,10 @@
 const bcrypt = require("bcryptjs");
 const Usuario = require("../models/usuario");
-const { generarJWT } = require("../helpers/jwt");
+const { generarJWT, getUid } = require("../helpers/jwt");
 
 const crearUsuario = async (req, res) => {
   const { email, password } = req.body;
-
+  
   try {
     const existeEmail = await Usuario.findOne({ email });
 
@@ -16,8 +16,8 @@ const crearUsuario = async (req, res) => {
     }
 
     const usuario = new Usuario(req.body);
-
-    //* Encriptar contrasegna
+    
+    // Encriptar contrasegna
     const salt = bcrypt.genSaltSync(10);
     usuario.password = bcrypt.hashSync(password, salt);
 
@@ -40,11 +40,27 @@ const crearUsuario = async (req, res) => {
   }
 };
 
-getUsuarios = async (req, res) => {
-    
+const getUsuario = async (req, res) => {
+
+  const token = req.headers.token;
+  const uid = await getUid(token);
+  const user = await Usuario.findById(uid);
+
+  if (!user) {
+    return res.status(400).json({
+      ok: false,
+      msg: "No existe usuario",
+    });
+  }
+
+  res.json({
+    ok: true,
+    user
+  })
+
 }
 
 module.exports = {
   crearUsuario,
-  getUsuarios
+  getUsuario,
 };

@@ -50,7 +50,6 @@ const renewToken = async (req, res) => {
 const verificarToken = async (req, res) => {
   try {
     const {token} = req.body
-    console.log(token);
    const verify = await verificarJWT(token);
   
    res.json({

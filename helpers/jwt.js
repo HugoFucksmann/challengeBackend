@@ -32,7 +32,18 @@ const verificarJWT = (token) => {
   }
 };
 
+const getUid = (token) => {
+   try {
+     const { uid } = jwt.verify(token, process.env.JWT_SECRET);
+      return uid
+   } catch (err) {
+     console.log(err);
+     return false;
+   }
+}
+
 module.exports = {
   generarJWT,
   verificarJWT,
+  getUid,
 };
